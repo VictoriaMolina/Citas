@@ -11,13 +11,46 @@ const routes = [
     component: Home
   },
   {
-    path: '/about',
-    name: 'About',
+    path: "/citas",
+    name: "Citas",
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/Citas.vue")
+  },
+  {
+    path: "/servicios",
+    name: "Servicios",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/Servicios.vue"),
+    children: [
+      {
+        path: "servicios/nuevo",
+        name: "ServiciosForm",
+        component: () =>
+          import(/* webpackChunkName: "about" */ "../views/serviciosForm.vue"),
+      },
+      {
+        path: "edit",
+        name: "Edit",
+        component: () =>
+          import(/* webpackChunkName: "about" */ "../views/serviciosForm.vue"),
+      },
+    ],
+  },
+  {
+    path: "/form",
+    name: "Form",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/citasForm.vue"),
+  },
 ]
 
 const router = new VueRouter({

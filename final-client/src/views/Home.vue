@@ -14,13 +14,32 @@
     ></b-carousel-slide>
     
   </b-carousel>
+  <b-button variant="dark" class="mt-5" v-on:click="crearCita()">Agendar cita</b-button>
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 
 export default {
-  name: 'Home',
- 
-}
+  name: "Citas",
+  data() {
+    return {
+      cita: true,
+    };
+  },
+  components: {},
+  computed: {
+    ...mapGetters("citas", ["getCitaList"]),
+  },
+  methods: {
+    crearCita() {
+      this.table = false;
+      this.$router.push("/form");
+    }
+  },
+  mounted() {
+    this.$store.dispatch("citas/getCitasList");
+  },
+};
 </script>

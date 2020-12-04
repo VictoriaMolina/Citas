@@ -6,20 +6,15 @@ const citaSchema = new mongoose.Schema(
             type: String,
             required: true
         },
+        apellido: {
+            type: String,
+            required: true
+        },
         fecha: {
             type: String,
             required: true
         },
-        descripcion: {
-            type: String,
-            required: true
-        },
-        tiempo: {
-            type: Number,
-            required: true,
-            default: 1,
-        },
-        costo: {
+        telefono: {
             type: Number,
             required: true
         }

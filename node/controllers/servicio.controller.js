@@ -8,12 +8,11 @@ const {Servicios} = require('../models/servicio.models');
 async function crearServicio(req, res){
     const body = req.body;
 
-    if(body.nom && body.tiem && body.desc && body.costo){
+    if(body.nom && body.imagen && body.desc && body.costo){
         try{
             const servicio = await new Servicios({
                 nombre: body.nom,
                 descripcion: body.desc,
-                tiempo: body.tiem,
                 costo: body.costo,
                 imagen: body.imagen ? body.imagen : ""
             }).save();
@@ -97,7 +96,7 @@ async function actualizarServicio(req, res){
     const nombre = req.body.nom;
     const descripcion = req.body.desc;
     const costo = req.body.costo;
-    const tiempo = req.body.tiem;
+    const imagen = req.body.imagen;
 
 
         try{
@@ -111,7 +110,7 @@ async function actualizarServicio(req, res){
                         nombre: nombre,
                         descripcion: descripcion,
                         costo: costo,
-                        tiempo:tiempo
+                        imagen: imagen
                     }
                 });
 

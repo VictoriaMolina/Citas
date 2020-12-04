@@ -9,14 +9,13 @@ async function crearCita(req, res){
     const body = req.body;
     console.log(body);
 
-    if(body.nom && body.tiem && body.desc && body.fecha && body.costo){
+    if(body.nom && body.ape && body.tel && body.fecha){
         try{
             const cita = await new Citas({
                 nombre: body.nom,
-                descripcion: body.desc,
-                tiempo: body.tiem,
-                fecha: body.fecha,
-                costo: body.costo
+                apellido: body.ape,
+                telefono: body.tel,
+                fecha: body.fecha
             }).save();
 
             if(cita) {
@@ -103,10 +102,8 @@ async function citaInfo(req, res){
 async function actualizarCita(req, res){
     const citaId = req.body.id;
     const nombre = req.body.nom;
-    const descripcion = req.body.desc;
-    const imagen = req.body.img;
-    const costo = req.body.costo;
-    const tiempo = req.body.tiem;
+    const apellido = req.body.ape;
+    const telefono = req.body.tel;
     const fecha = req.body.fecha;
 
 
@@ -119,10 +116,8 @@ async function actualizarCita(req, res){
 
                     $set: {
                         nombre: nombre,
-                        descripcion: descripcion,
-                        imagen: imagen,
-                        costo: costo,
-                        tiempo: tiempo,
+                        apellido: apellido,
+                        telefono: telefono,
                         fecha: fecha
                     }
                 });

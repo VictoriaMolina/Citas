@@ -10,12 +10,10 @@ const servicoSchema = new mongoose.Schema(
             type: String,
             required: true
         },
-        tiempo: {
+        costo:{
             type: Number,
-            required: true,
-            default: 1,
+            required: true
         },
-        costo: Number,
         imagen:{
             type: String,
             required: false
