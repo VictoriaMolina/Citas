@@ -18,7 +18,7 @@ const actions = {
       .post("http://localhost:3000/servicios/nuevo", {
         nom: data.nom,
         desc: data.desc,
-        img: data.img,
+        imagen: data.imagen,
         costo: data.costo
       })
       .then(async function(response) {
@@ -58,8 +58,7 @@ const actions = {
         servicioId: state.currentServicioId,
         nom: state.currentNombre,
         desc: state.currentDescripcion,
-        img: state.currentImagen,
-        costo: state.currentCosto
+        img: state.currentImagen
       })
       .then(function(response) {
         if (response.status === "200") {

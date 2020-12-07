@@ -2,7 +2,7 @@
   <div class="mt-5 mr-5 ml-5">
     <div v-show = "servicio">
       <h1>Servicios View</h1>
-      <b-button variant="info" v-on:click="crearServicio()">Crear Servicio</b-button>
+      <b-button variant="dark" v-on:click="crearServicio()">Crear Servicio</b-button>
       <b-card-group columns class="mt-5">
         <serviceCard
           v-for="service in getServiceList"
@@ -15,7 +15,7 @@
           :key="service._id"
         >
           <b-button
-            variant="danger"
+            variant="dark"
             class="mr-3"
             v-on:click="showDeleteModal(service)"
             v-b-modal.modal-1
@@ -53,7 +53,7 @@ export default {
   },
   methods: {
     crearServicio() {
-      this.dish = false
+      this.servicio = false
       this.$router.push("servicios/nuevo");
     },
     editarServicio() {

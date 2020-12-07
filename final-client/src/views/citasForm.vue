@@ -34,14 +34,19 @@
         ></b-form-input>
       </b-form-group>
 
-      <label for="example-datepicker">Fecha:</label>
-      <b-form-datepicker
-        id="example-datepicker"
-        class="mb-2"
-      ></b-form-datepicker>
+      <b-form-group id="input-group-4" label="Fecha:" label-for="input-4"  for="example-datepicker">
+       <b-form-datepicker 
+       id="example-datepicker" 
+       v-model="form.fecha" 
+       class="mb-2"></b-form-datepicker>
+      </b-form-group>
 
-       <label for="example-datepicker">Hora:</label>
-       <b-form-timepicker locale="en"></b-form-timepicker>
+       <b-form-group id="input-group-5" label="Hora:" label-for="input-5">
+       <b-form-timepicker 
+       v-model="form.hora" 
+       locale="en">
+       </b-form-timepicker>
+      </b-form-group>
 
       <b-button variant="primary" v-on:click="newCita()" class="mt-5 mr-3">Submit</b-button>
       <b-button type="reset" variant="danger" class="mt-5">Reset</b-button>
@@ -63,7 +68,8 @@ export default {
         nom: "",
         ape: "",
         tel: "",
-        costo: "",
+        fecha: "",
+        hora: ""
       },
       show: true,
     };
@@ -73,7 +79,8 @@ export default {
       nombre: (state) => state.currentNombre,
       apellido: (state) => state.currentApellido,
       telefono: (state) => state.currentTelefono,
-      fecha: (state) => state.currentFecha
+      //fecha: (state) => state.currentFecha,
+      //hora: (state) => state.currentHora
     }),
   },
   methods: {
@@ -83,8 +90,11 @@ export default {
     onReset(evt) {
       evt.preventDefault();
       // Reset our form values
-      this.form.name = "";
-      this.form.status = "";
+      this.form.nom = "";
+      this.form.ape = "";
+      this.form.tel = "";
+      this.form.fecha = "";
+      this.form.hora = "";
       // Trick to reset/clear native browser form validation state
       this.show = false;
       this.$nextTick(() => {
@@ -98,11 +108,14 @@ export default {
       this.$store.commit("citas/SET_CURRENT_APELLIDO", value);
     },
     updateTelefono(value) {
-      this.$store.commit("citas/SET_CURRENT_TELEFONO", value);
-    },
+      this.$store.commit("citas/SET_CURRENT_TEL", value);
+    },/*
     updateFecha(value) {
       this.$store.commit("citas/SET_CURRENT_FECHA", value);
-    }
+    },
+    updateHora(value) {
+      this.$store.commit("citas/SET_CURRENT_HORA", value);
+    }*/
     
   },
   created() {

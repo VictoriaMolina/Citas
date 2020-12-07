@@ -1,11 +1,10 @@
 <template>
   <div class="mt-5 mr-5 ml-5">
-    <div v-show="cita">
+    <div>
       <h1>Citas View</h1>
-      
       <b-table striped hover :items="getCitaList" class="mt-5"></b-table>
     </div>
-    <router-view v-show="!cita"></router-view>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -16,7 +15,6 @@ export default {
   name: "Citas",
   data() {
     return {
-      cita: true,
     };
   },
   components: {},

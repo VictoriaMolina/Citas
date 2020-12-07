@@ -11,17 +11,15 @@ describe("Servicios", function () {
       servicio1 = await new Servicios({
         nombre: "Corte de mujer",
         descripcion: "Corte de cabello",
-        fecha: "02/12/2020",
-        price: 150,
-        tiempo: 1,
+        costo: 150,
+        imagen: "http/:asjfkaf.com",
       }).save();
 
       servicio2 = await new Servicios({
         nombre: "Maquillaje",
         descripcion: "Maquillaje",
-        fecha: "02/12/2020",
-        price: 450,
-        tiempo: 2,
+        costo: 450,
+        imagen: "http/:gjrer.com",
       }).save();
     });
 
@@ -30,9 +28,8 @@ describe("Servicios", function () {
         .post("/servicios/nuevo")
         .send("nom=Corte de mujer")
         .send("desc=Corte de cabello")
-        .send("fecha=02/12/2020")
+        .send("imagen=http/:asjfkaf.com")
         .send("costo=150")
-        .send("tiem=1")
         .expect(200)
         .end(async function (err, res) {
           if (err) {
@@ -43,9 +40,8 @@ describe("Servicios", function () {
               "descripcion",
               "Corte de cabello"
             );
-            expect(res.body.data).toHaveProperty("fecha", "02/12/2020");
+            expect(res.body.data).toHaveProperty("imagen", "http/:asjfkaf.com");
             expect(res.body.data).toHaveProperty("costo", 150);
-            expect(res.body.data).toHaveProperty("tiempo", 1);
             done();
           }
         });
@@ -55,27 +51,8 @@ describe("Servicios", function () {
       request(app)
         .post("/servicios/nuevo")
         .send("desc=Corte de cabello")
-        .send("fecha=02/12/2020")
+        .send("imagen=http/:asjfkaf.com")
         .send("costo=150")
-        .send("tiem=1")
-        .expect(402)
-        .end(async function (err, res) {
-          if (err) {
-            done(err);
-          } else {
-            expect(res.text).toBe("PARÁMETROS ERRÓNEOS");
-            done();
-          }
-        });
-    });
-
-    it("Deberá retornar un error si falta el parámetro de nombre.", function (done) {
-      request(app)
-        .post("/servicios/nuevo")
-        .send("desc=Corte de cabello")
-        .send("fecha=02/12/2020")
-        .send("costo=150")
-        .send("tiem=1")
         .expect(402)
         .end(async function (err, res) {
           if (err) {
@@ -91,9 +68,8 @@ describe("Servicios", function () {
       request(app)
         .post("/servicios/nuevo")
         .send("nombre=Corte de mujer")
-        .send("fecha=02/12/2020")
+        .send("imagen=http/:asjfkaf.com")
         .send("costo=150")
-        .send("tiem=1")
         .expect(402)
         .end(async function (err, res) {
           if (err) {
@@ -105,13 +81,12 @@ describe("Servicios", function () {
         });
     });
 
-    it("Deberá retornar un error si falta el parámetro de fecha.", function (done) {
+    it("Deberá retornar un error si falta el parámetro de imagen.", function (done) {
       request(app)
         .post("/servicios/nuevo")
         .send("nombre=Corte de mujer")
         .send("desc=Corte de cabello")
         .send("costo=150")
-        .send("tiem=1")
         .expect(402)
         .end(async function (err, res) {
           if (err) {
@@ -128,25 +103,7 @@ describe("Servicios", function () {
         .post("/servicios/nuevo")
         .send("nombre=Corte de mujer")
         .send("desc=Corte de cabello")
-        .send("fecha=02/12/2020")
-        .send("tiem=1")
-        .expect(402)
-        .end(async function (err, res) {
-          if (err) {
-            done(err);
-          } else {
-            expect(res.text).toBe("PARÁMETROS ERRÓNEOS");
-            done();
-          }
-        });
-    });
-
-    it("Deberá retornar un error si falta el parámetro de tiempo.", function (done) {
-      request(app)
-        .post("/servicios/nuevo")
-        .send("nombre=Corte de mujer")
-        .send("desc=Corte de cabello")
-        .send("fecha=02/12/2020")
+        .send("imagen=http/:asjfkaf.com")
         .expect(402)
         .end(async function (err, res) {
           if (err) {
@@ -160,6 +117,21 @@ describe("Servicios", function () {
   });
 
   describe("Dado que se requiere tener una lista de servicios.", function () {
+    beforeEach(async function () {
+      servicio1 = await new Servicios({
+        nombre: "Corte de mujer",
+        descripcion: "Corte de cabello",
+        costo: 150,
+        imagen: "http/:asjfkaf.com",
+      }).save();
+
+      servicio2 = await new Servicios({
+        nombre: "Maquillaje",
+        descripcion: "Maquillaje",
+        costo: 450,
+        imagen: "http/:gjrer.com",
+      }).save();
+    });
     it("Deberá regresar una lista de servicios sin enviar algún parámetro.", function (done) {
       request(app)
         .get("/servicios/lista")
@@ -168,23 +140,34 @@ describe("Servicios", function () {
           if (err) {
             done(err);
           } else {
-            expect(res.body.data).toHaveProperty("nombre", "Corte de mujer");
-            expect(res.body.data).toHaveProperty(
-              "descripcion",
-              "Corte de cabello"
-            );
-            expect(res.body.data).toHaveProperty("fecha", "02/12/2020");
-            expect(res.body.data).toHaveProperty("costo", 150);
-            expect(res.body.data).toHaveProperty("tiempo", 1);
+            expect(res.body.data[0]).toHaveProperty("nombre", "Corte de mujer");
+            expect(res.body.data[0]).toHaveProperty("descripcion", "Corte de cabello");
+            expect(res.body.data[0]).toHaveProperty("imagen", "http/:asjfkaf.com");
+            expect(res.body.data[0]).toHaveProperty("costo", 150);
 
             expect(res.body.data[1]).toHaveProperty("nombre", "Maquillaje");
-            expect(res.body.data[1]).toHaveProperty(
-              "descripcion",
-              "Maquillaje"
-            );
-            expect(res.body.data[1]).toHaveProperty("fecha", "02/12/2020");
+            expect(res.body.data[1]).toHaveProperty("descripcion", "Maquillaje");
+            expect(res.body.data[1]).toHaveProperty("imagen", "http/:gjrer.com");
             expect(res.body.data[1]).toHaveProperty("costo", 450);
-            expect(res.body.data[1]).toHaveProperty("tiempo", 2);
+
+            expect(res.body.data).toEqual([
+              {
+                _id: servicio1._id.toString(),
+                nombre: "Corte de mujer",
+                descripcion: "Corte de cabello",
+                costo: 150,
+                imagen: "http/:asjfkaf.com",
+                __v: 0,
+              },
+              {
+                _id: servicio2._id.toString(),
+                nombre: "Maquillaje",
+                descripcion: "Maquillaje",
+                costo: 450,
+                imagen: "http/:gjrer.com",
+                __v: 0,
+              },
+            ]);
             done();
           }
         });
@@ -196,9 +179,8 @@ describe("Servicios", function () {
       servicio2 = await new Servicios({
         nombre: "Maquillaje",
         descripcion: "Maquillaje",
-        fecha: "02/12/2020",
-        price: 450,
-        tiempo: 2,
+        imagen: "http/:gjrer.com",
+        costo: 450,
       }).save();
     });
 
@@ -221,9 +203,8 @@ describe("Servicios", function () {
         .send(`id=${servicio2._id}`)
         .send("name=Maquillaje")
         .send("desc=Maquillaje")
-        .send("fecha=02/12/2020")
+        .send("imagen=http/:gjrer.com")
         .send("costo=450")
-        .send("tiem=2")
         .expect(200)
         .end(async function (err, res) {
           if (err) {
@@ -233,7 +214,7 @@ describe("Servicios", function () {
               _id: servicio2._id,
             });
 
-            expect(result).toHaveProperty("name", "Maquillaje");
+            expect(result).toHaveProperty("costo", 450);
 
             done();
           }
@@ -245,7 +226,7 @@ describe("Servicios", function () {
     it("Deberá eliminar un servicio si el id ha sido enviado", function (done) {
       request(app)
         .post("/servicios/eliminar")
-        .send(`servicioId=${servicio2._id}`)
+        .send(`id=${servicio2._id}`)
         .expect(200)
         .end(async function (err, res) {
           if (err) {

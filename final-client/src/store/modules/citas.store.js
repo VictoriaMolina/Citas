@@ -5,7 +5,6 @@ const state = {
   currentNom: "",
   currentApe: "",
   currentTel: "",
-  currentFecha: "",
   currentCitaId: ""
 };
 const getters = {
@@ -16,10 +15,11 @@ const actions = {
   crearCita({}, data) {
     axios
       .post("http://localhost:3000/citas/nuevo", {
-        nombre: data.nom,
-        apellido: data.ape,
-        telefono: data.tel,
+        nom: data.nom,
+        ape: data.ape,
+        tel: data.tel,
         fecha: data.fecha,
+        hora: data.hora
       })
       .then(async function(response) {
         if (response.status === "200") {
@@ -114,9 +114,9 @@ const mutations = {
   SET_CURRENT_TEL(state, telefono) {
     state.currentTel = telefono;
   },
-  SET_CURRENT_FECHA(state, fecha) {
+  /*SET_CURRENT_FECHA(state, fecha) {
     state.currentFecha = fecha;
-  },
+  },*/
 };
 
 export default {

@@ -14,10 +14,14 @@ const citaSchema = new mongoose.Schema(
             type: String,
             required: true
         },
+        hora: {
+            type: String,
+            required: true
+        },
         telefono: {
             type: Number,
             required: true
-        }
+        },
     }
 );
 

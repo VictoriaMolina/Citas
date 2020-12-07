@@ -1,14 +1,14 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Vue from "vue";
+import VueRouter from "vue-router";
+import Home from "../views/Home.vue";
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
   {
-    path: '/',
-    name: 'Home',
-    component: Home
+    path: "/",
+    name: "Home",
+    component: Home,
   },
   {
     path: "/citas",
@@ -17,7 +17,7 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/Citas.vue")
+      import(/* webpackChunkName: "about" */ "../views/Citas.vue"),
   },
   {
     path: "/servicios",
@@ -27,20 +27,18 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/Servicios.vue"),
-    children: [
-      {
-        path: "servicios/nuevo",
-        name: "ServiciosForm",
-        component: () =>
-          import(/* webpackChunkName: "about" */ "../views/serviciosForm.vue"),
-      },
-      {
-        path: "edit",
-        name: "Edit",
-        component: () =>
-          import(/* webpackChunkName: "about" */ "../views/serviciosForm.vue"),
-      },
-    ],
+  },
+  {
+    path: "/servicios/nuevo",
+    name: "ServiciosForm",
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/serviciosForm.vue"),
+  },
+  {
+    path: "/servicios/edit",
+    name: "Edit",
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/serviciosForm.vue"),
   },
   {
     path: "/form",
@@ -51,12 +49,12 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/citasForm.vue"),
   },
-]
+];
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: "history",
   base: process.env.BASE_URL,
-  routes
-})
+  routes,
+});
 
-export default router
+export default router;

@@ -45,7 +45,7 @@
         ></b-form-input>
       </b-form-group>
 
-      <b-button variant="primary" v-on:click="newService()">Submit</b-button>
+      <b-button variant="primary" v-on:click="newService()" class="mr-3">Submit</b-button>
       <b-button type="reset" variant="danger">Reset</b-button>
     </b-form>
   </div>
@@ -77,12 +77,12 @@ export default {
     }),
   },
   methods: {
-    newDish() {
+    newService() {
       console.log(this.edit);
       if(this.edit === false) {
         this.$store.dispatch("servicios/crearServicio", this.form);
       } else {
-        this.$store.dispatch("servicios/editar");
+        this.$store.dispatch("servicios/editar", this.form);
       }
     },
     onReset(evt) {

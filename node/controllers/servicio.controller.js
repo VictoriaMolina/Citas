@@ -95,7 +95,6 @@ async function actualizarServicio(req, res){
     const servicioId = req.body.id;
     const nombre = req.body.nom;
     const descripcion = req.body.desc;
-    const costo = req.body.costo;
     const imagen = req.body.imagen;
 
 
@@ -126,11 +125,13 @@ async function actualizarServicio(req, res){
 };
 
 async function eliminarServicio(req, res){
-    const servicioId = req.body.id;
+    const body = req.body;
 
-    if(servicioId) {
+    if(body.servicioId) {
         try{
-            const results = await Servicios.deleteOne();
+            const results = await Servicios.deleteOne({
+                _id: body.servicioId
+            });
 
             if(results) {
                 res.json({'data': results});
