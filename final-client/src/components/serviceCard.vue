@@ -12,13 +12,13 @@
     <b-card-text >{{ cardPrice }}</b-card-text>
     <slot></slot>
 
-    <b-button
+    <!--<b-button
       v-if="needEdit"
       v-on:click="editEvent"
       class="mr-3"
       variant="outline-success"
       >Edit
-    </b-button>
+    </b-button>-->
 
     
 

@@ -10,6 +10,11 @@ const citaSchema = new mongoose.Schema(
             type: String,
             required: true
         },
+        servicio: {
+            type: String,
+            required: true,
+            value: ["Corte de cabello", "Uñas", "Maquillaje"]
+        },
         fecha: {
             type: String,
             required: true

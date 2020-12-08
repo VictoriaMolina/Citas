@@ -1,7 +1,7 @@
 <template>
   <div class="mt-5 mr-5 ml-5">
     <div v-show = "servicio">
-      <h1>Servicios View</h1>
+      <h1>Nuestros servicios</h1>
       <b-button variant="dark" v-on:click="crearServicio()">Crear Servicio</b-button>
       <b-card-group columns class="mt-5">
         <serviceCard
@@ -9,12 +9,12 @@
           :cardTitle="service.nombre"
           :cardImage="service.imagen"
           :cardDesc="service.descripcion"
-          :cardPrice="service.price"
+          :cardPrice="service.costo"
           :needEdit="true"
           :cardId="service._id"
           :key="service._id"
         >
-          <b-button
+          <!--<b-button
             variant="dark"
             class="mr-3"
             v-on:click="showDeleteModal(service)"
@@ -25,7 +25,7 @@
 
           <b-modal id="modal-1" title="Services">
             <p class="my-4">¿Desea eliminar?</p>
-          </b-modal>
+          </b-modal>-->
         </serviceCard>
       </b-card-group>
     </div>

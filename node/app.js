@@ -6,7 +6,7 @@ var logger = require('morgan');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
-// Database connection
+/*// Database connection
 const databaseUrl = "mongodb://localhost:27017/appDataBase";
 const databaseOptions = {
   useNewUrlParser: true
@@ -15,7 +15,7 @@ const databaseOptions = {
 mongoose.connect(databaseUrl, databaseOptions);
 mongoose.connection.on("open", function(){
   console.log("MongoDb connection opened")
-});
+});*/
 
 const serviciosRouter = require('./routes/servicio.routes');
 const citasRouter = require('./routes/citas.routes');

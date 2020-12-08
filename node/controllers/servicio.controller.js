@@ -96,6 +96,7 @@ async function actualizarServicio(req, res){
     const nombre = req.body.nom;
     const descripcion = req.body.desc;
     const imagen = req.body.imagen;
+    const costo = req.body.costo;
 
 
         try{

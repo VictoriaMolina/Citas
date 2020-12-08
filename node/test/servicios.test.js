@@ -226,7 +226,7 @@ describe("Servicios", function () {
     it("Deberá eliminar un servicio si el id ha sido enviado", function (done) {
       request(app)
         .post("/servicios/eliminar")
-        .send(`id=${servicio2._id}`)
+        .send(`servicioId=${servicio2._id}`)
         .expect(200)
         .end(async function (err, res) {
           if (err) {

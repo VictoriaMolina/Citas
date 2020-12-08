@@ -5,7 +5,7 @@ const { setupDB } = require("./setupDB");
 
 setupDB("testDatabase");
 
-describe("Citas", function () {
+describe.skip("Citas", function () {
   describe("Dado que se requiere crear una cita.", function () {
     beforeEach(async function () {
       cita1 = await new Citas({
@@ -13,6 +13,8 @@ describe("Citas", function () {
         apellido: "Molina",
         fecha: "06/12/2020",
         telefono: 6142546753,
+        hora: "7:00:00",
+        servicio: "Uñas"
       }).save();
 
       cita2 = await new Citas({
@@ -20,28 +22,31 @@ describe("Citas", function () {
         apellido: "Garza",
         fecha: "06/12/2020",
         telefono: 6142345786,
+        hora: "8:00:00",
+        servicio: "Maquillaje"
       }).save();
     });
 
-    it("Deberá crear un servicio si todos los parámetros han sido enviados.", function (done) {
+    it("Deberá crear una cita si todos los parámetros han sido enviados.", function (done) {
       request(app)
-        .post("/servicios/nuevo")
-        .send("nom=Corte de mujer")
-        .send("desc=Corte de cabello")
-        .send("imagen=http/:asjfkaf.com")
-        .send("costo=150")
+        .post("/citas/nuevo")
+        .send("nom=Victoria")
+        .send("ape=Molina")
+        .send("fecha=06/12/2020")
+        .send("tel=6142546753")
+        .send("hora=7:00:00")
+        .send("serv=Uñas")
         .expect(200)
         .end(async function (err, res) {
           if (err) {
             done(err);
           } else {
-            expect(res.body.data).toHaveProperty("nombre", "Corte de mujer");
-            expect(res.body.data).toHaveProperty(
-              "descripcion",
-              "Corte de cabello"
-            );
-            expect(res.body.data).toHaveProperty("imagen", "http/:asjfkaf.com");
-            expect(res.body.data).toHaveProperty("costo", 150);
+            expect(res.body.data).toHaveProperty("nombre", "Victoria");
+            expect(res.body.data).toHaveProperty("apellido", "Molina");
+            expect(res.body.data).toHaveProperty("telefono", 6142546753);
+            expect(res.body.data).toHaveProperty("fecha", "06/12/2020");
+            expect(res.body.data).toHaveProperty("hora", "7:00:00");
+            expect(res.body.data).toHaveProperty("servicio", "Uñas");
             done();
           }
         });
@@ -49,10 +54,12 @@ describe("Citas", function () {
 
     it("Deberá retornar un error si falta el parámetro de nombre.", function (done) {
       request(app)
-        .post("/servicios/nuevo")
-        .send("desc=Corte de cabello")
-        .send("imagen=http/:asjfkaf.com")
-        .send("costo=150")
+        .post("/citas/nuevo")
+        .send("ape=Molina")
+        .send("fecha=06/12/2020")
+        .send("tel=6142546753")
+        .send("hora=7:00:00")
+        .send("serv=Uñas")
         .expect(402)
         .end(async function (err, res) {
           if (err) {
@@ -64,12 +71,14 @@ describe("Citas", function () {
         });
     });
 
-    it("Deberá retornar un error si falta el parámetro de descripcion.", function (done) {
+    it("Deberá retornar un error si falta el parámetro de apellido.", function (done) {
       request(app)
-        .post("/servicios/nuevo")
-        .send("nombre=Corte de mujer")
-        .send("imagen=http/:asjfkaf.com")
-        .send("costo=150")
+        .post("/citas/nuevo")
+        .send("nom=Victoria")
+        .send("fecha=06/12/2020")
+        .send("tel=6142546753")
+        .send("hora=7:00:00")
+        .send("serv=Uñas")
         .expect(402)
         .end(async function (err, res) {
           if (err) {
@@ -81,12 +90,14 @@ describe("Citas", function () {
         });
     });
 
-    it("Deberá retornar un error si falta el parámetro de imagen.", function (done) {
+    it("Deberá retornar un error si falta el parámetro de fecha.", function (done) {
       request(app)
-        .post("/servicios/nuevo")
-        .send("nombre=Corte de mujer")
-        .send("desc=Corte de cabello")
-        .send("costo=150")
+        .post("/citas/nuevo")
+        .send("nom=Victoria")
+        .send("ape=Molina")
+        .send("tel=6142546753")
+        .send("hora=7:00:00")
+        .send("serv=Uñas")
         .expect(402)
         .end(async function (err, res) {
           if (err) {
@@ -98,12 +109,52 @@ describe("Citas", function () {
         });
     });
 
-    it("Deberá retornar un error si falta el parámetro de costo.", function (done) {
+    it("Deberá retornar un error si falta el parámetro de telefono.", function (done) {
       request(app)
-        .post("/servicios/nuevo")
-        .send("nombre=Corte de mujer")
-        .send("desc=Corte de cabello")
-        .send("imagen=http/:asjfkaf.com")
+        .post("/citas/nuevo")
+        .send("nom=Victoria")
+        .send("ape=Molina")
+        .send("fecha=06/12/2020")
+        .send("hora=7:00:00")
+        .send("serv=Uñas")
+        .expect(402)
+        .end(async function (err, res) {
+          if (err) {
+            done(err);
+          } else {
+            expect(res.text).toBe("PARÁMETROS ERRÓNEOS");
+            done();
+          }
+        });
+    });
+
+    it("Deberá retornar un error si falta el parámetro de hora.", function (done) {
+      request(app)
+        .post("/citas/nuevo")
+        .send("nom=Victoria")
+        .send("ape=Molina")
+        .send("fecha=06/12/2020")
+        .send("tel=6142546753")
+        .send("serv=Uñas")
+        .expect(402)
+        .end(async function (err, res) {
+          if (err) {
+            done(err);
+          } else {
+            expect(res.text).toBe("PARÁMETROS ERRÓNEOS");
+            done();
+          }
+        });
+    });
+
+    it("Deberá retornar un error si falta el parámetro de servicio.", function (done) {
+      request(app)
+        .post("/citas/nuevo")
+        .send("nom=Victoria")
+        .send("ape=Molina")
+        .send("fecha=06/12/2020")
+        .send("tel=6142546753")
+        .send("hora=7:00:00")
         .expect(402)
         .end(async function (err, res) {
           if (err) {
@@ -116,55 +167,67 @@ describe("Citas", function () {
     });
   });
 
-  describe("Dado que se requiere tener una lista de servicios.", function () {
+  describe("Dado que se requiere tener una lista de citas.", function () {
     beforeEach(async function () {
-      servicio1 = await new Servicios({
-        nombre: "Corte de mujer",
-        descripcion: "Corte de cabello",
-        costo: 150,
-        imagen: "http/:asjfkaf.com",
+      cita1 = await new Citas({
+        nombre: "Victoria",
+        apellido: "Molina",
+        fecha: "06/12/2020",
+        telefono: 6142546753,
+        hora: "7:00:00",
+        servicio: "Uñas"
       }).save();
 
-      servicio2 = await new Servicios({
-        nombre: "Maquillaje",
-        descripcion: "Maquillaje",
-        costo: 450,
-        imagen: "http/:gjrer.com",
+      cita2 = await new Citas({
+        nombre: "Andrea",
+        apellido: "Garza",
+        fecha: "06/12/2020",
+        telefono: 6142345786,
+        hora: "8:00:00",
+        servicio: "Maquillaje"
       }).save();
     });
-    it("Deberá regresar una lista de servicios sin enviar algún parámetro.", function (done) {
+    it("Deberá regresar una lista de citas sin enviar algún parámetro.", function (done) {
       request(app)
-        .get("/servicios/lista")
+        .get("/citas/lista")
         .expect(200)
         .end(async function (err, res) {
           if (err) {
             done(err);
           } else {
-            expect(res.body.data[0]).toHaveProperty("nombre", "Corte de mujer");
-            expect(res.body.data[0]).toHaveProperty("descripcion", "Corte de cabello");
-            expect(res.body.data[0]).toHaveProperty("imagen", "http/:asjfkaf.com");
-            expect(res.body.data[0]).toHaveProperty("costo", 150);
+            expect(res.body.data[0]).toHaveProperty("nombre", "Victoria");
+            expect(res.body.data[0]).toHaveProperty("apellido", "Molina");
+            expect(res.body.data[0]).toHaveProperty("telefono", 6142546753);
+            expect(res.body.data[0]).toHaveProperty("fecha", "06/12/2020");
+            expect(res.body.data[0]).toHaveProperty("hora", "7:00:00");
+            expect(res.body.data[0]).toHaveProperty("servicio", "Uñas");
 
-            expect(res.body.data[1]).toHaveProperty("nombre", "Maquillaje");
-            expect(res.body.data[1]).toHaveProperty("descripcion", "Maquillaje");
-            expect(res.body.data[1]).toHaveProperty("imagen", "http/:gjrer.com");
-            expect(res.body.data[1]).toHaveProperty("costo", 450);
+            expect(res.body.data[1]).toHaveProperty("nombre", "Andrea");
+            expect(res.body.data[1]).toHaveProperty("apellido", "Garza");
+            expect(res.body.data[1]).toHaveProperty("telefono", 6142345786);
+            expect(res.body.data[1]).toHaveProperty("fecha", "06/12/2020");
+            expect(res.body.data[1]).toHaveProperty("hora", "8:00:00");
+            expect(res.body.data[1]).toHaveProperty("servicio", "Maquillaje");
 
             expect(res.body.data).toEqual([
               {
-                _id: servicio1._id.toString(),
-                nombre: "Corte de mujer",
-                descripcion: "Corte de cabello",
-                costo: 150,
-                imagen: "http/:asjfkaf.com",
+                _id: cita1._id.toString(),
+                nombre: "Victoria",
+                apellido: "Molina",
+                fecha: "06/12/2020",
+                telefono: 6142546753,
+                hora: "7:00:00",
+                servicio: "Uñas",
                 __v: 0,
               },
               {
-                _id: servicio2._id.toString(),
-                nombre: "Maquillaje",
-                descripcion: "Maquillaje",
-                costo: 450,
-                imagen: "http/:gjrer.com",
+                _id: cita2._id.toString(),
+                nombre: "Andrea",
+                apellido: "Garza",
+                fecha: "06/12/2020",
+                telefono: 6142345786,
+                hora: "8:00:00",
+                servicio: "Maquillaje",
                 __v: 0,
               },
             ]);
@@ -174,19 +237,20 @@ describe("Citas", function () {
     });
   });
 
-  describe("Dado que se requiere actualizar un servicio", function () {
+  describe("Dado que se requiere actualizar una cita", function () {
     beforeEach(async function () {
-      servicio2 = await new Servicios({
-        nombre: "Maquillaje",
-        descripcion: "Maquillaje",
-        imagen: "http/:gjrer.com",
-        costo: 450,
+      cita1 = await new Citas({
+        nombre: "Victoria",
+        apellido: "Molina",
+        fecha: "06/12/2020",
+        telefono: 6142546753,
+        hora: "7:00:00",
+        servicio: "Uñas"
       }).save();
     });
-
     it("Deberá retornar error si el parámetro id no ha sido enviado.", function (done) {
       request(app)
-        .post("/servicios/actualizar")
+        .post("/citas/actualizar")
         .expect(402)
         .end(async function (err, res) {
           if (err) {
@@ -199,22 +263,24 @@ describe("Citas", function () {
 
     it("Deberá actualizar si el parámetro id ha sido enviado.", function (done) {
       request(app)
-        .post("/servicios/actualizar")
-        .send(`id=${servicio2._id}`)
-        .send("name=Maquillaje")
-        .send("desc=Maquillaje")
-        .send("imagen=http/:gjrer.com")
-        .send("costo=450")
+        .post("/citas/actualizar")
+        .send(`id=${cita1._id}`)
+        .send("nom=Victoria")
+        .send("ape=Molina")
+        .send("fecha=06/12/2020")
+        .send("telefono=6142546753")
+        .send("hora=7:00:00")
+        .send("servicio=Uñas")
         .expect(200)
         .end(async function (err, res) {
           if (err) {
             done(err);
           } else {
-            result = await Servicios.findOne({
-              _id: servicio2._id,
+            result = await Citas.findOne({
+              _id: cita1._id,
             });
 
-            expect(result).toHaveProperty("costo", 450);
+            expect(result).toHaveProperty("nombre", "Victoria");
 
             done();
           }
@@ -222,18 +288,18 @@ describe("Citas", function () {
     });
   });
 
-  describe("Dado que se requiere eliminar un servicio", function () {
-    it("Deberá eliminar un servicio si el id ha sido enviado", function (done) {
+  describe("Dado que se requiere eliminar una cita", function () {
+    it("Deberá eliminar una cita si el id ha sido enviado", function (done) {
       request(app)
-        .post("/servicios/eliminar")
-        .send(`id=${servicio2._id}`)
+        .post("/citas/eliminar")
+        .send(`citaId=${cita1._id}`)
         .expect(200)
         .end(async function (err, res) {
           if (err) {
             done(err);
           } else {
-            result = await Servicios.findOne({
-              _id: servicio2._id,
+            result = await Citas.findOne({
+              _id: cita1._id,
             });
 
             expect(result).toBeNull();
@@ -245,7 +311,7 @@ describe("Citas", function () {
 
     it("Deberá retornar error si el parámetro id no ha sido enviado.", function (done) {
       request(app)
-        .post("/servicios/eliminar")
+        .post("/citas/eliminar")
         .expect(402)
         .end(async function (err, res) {
           if (err) {

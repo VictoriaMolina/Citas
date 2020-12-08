@@ -7,16 +7,16 @@ const { Citas } = require("../models/citas.models");
  */
 async function crearCita(req, res){
     const body = req.body;
-    console.log(body);
 
-    if(body.nom && body.ape && body.tel && body.fecha && body.hora){
+    if(body.nom && body.ape && body.tel && body.fecha && body.hora && body.serv){
         try{
             const cita = await new Citas({
                 nombre: body.nom,
                 apellido: body.ape,
                 telefono: body.tel,
                 fecha: body.fecha,
-                hora: body.hora
+                hora: body.hora,
+                servicio: body.serv
             }).save();
 
             if(cita) {
@@ -42,7 +42,7 @@ async function crearCita(req, res){
  */
 async function citasLista(req, res){
     try{
-        const results = await Citas.find({});
+        const results = await Citas.find({})/*.select({fecha:1, servicio:1, hora:1})*/;
         if(results){
             res.json({
                 'data': results
@@ -67,13 +67,15 @@ async function citasLista(req, res){
  * @param {*} res 
  */
 async function citaInfo(req, res){
-    const citaId = req.query.cid;
+    const query = req.query;
+    console.log("QUERY");
+    console.log(query);
 
-    if(citaId) {
+    if(query.citaId) {
         try{
             const results = await Citas.findOne({
-                _id: citaId
-            });
+                citaId: query.citaId
+            }).select({nombre:1, apellido:1, telefono:1, fecha:1, servicio:1, hora:1});
                 
             if(results){
                 res.json({
@@ -107,6 +109,7 @@ async function actualizarCita(req, res){
     const telefono = req.body.tel;
     const fecha = req.body.fecha;
     const hora = req.body.hora;
+    const servicio = req.body.serv;
 
 
         try{
@@ -121,7 +124,8 @@ async function actualizarCita(req, res){
                         apellido: apellido,
                         telefono: telefono,
                         fecha: fecha,
-                        hora: hora
+                        hora: hora,
+                        servicio: servicio
                     }
                 });
 
@@ -140,11 +144,13 @@ async function actualizarCita(req, res){
  * Función que elimina una cita.
  */
 async function eliminarCita(req, res){
-    const citaId = req.body.id;
+    const body = req.body;
 
-    if(citaId) {
+    if(body.citaId) {
         try{
-            const results = await Citas.deleteOne();
+            const results = await Citas.deleteOne({
+                _id: body.citaId
+            });
 
             if(results) {
                 res.json({'data': results});

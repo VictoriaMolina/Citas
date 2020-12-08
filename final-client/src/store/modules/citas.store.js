@@ -5,6 +5,7 @@ const state = {
   currentNom: "",
   currentApe: "",
   currentTel: "",
+  currentServ: "",
   currentCitaId: ""
 };
 const getters = {
@@ -19,7 +20,8 @@ const actions = {
         ape: data.ape,
         tel: data.tel,
         fecha: data.fecha,
-        hora: data.hora
+        hora: data.hora,
+        serv: data.serv
       })
       .then(async function(response) {
         if (response.status === "200") {
@@ -58,7 +60,8 @@ const actions = {
         nom: state.currentNom,
         ape: state.currentApe,
         tel: state.currentTel,
-        fecha: state.currentFecha
+        fecha: state.currentFecha,
+        serv: state.currentServ
       })
       .then(function(response) {
         if (response.status === "200") {
@@ -100,6 +103,25 @@ const actions = {
         EventBus.$emit("Error", error.message);
       });
   },
+  // eslint-disable-next-line no-empty-pattern
+  async infoCita({ commit, state }) {
+    try {
+      const response = await axios.get("http://localhost:3000/citas/info", {
+        params:{citaId: state.citaId}
+      });
+      if (
+        response.data &&
+        response.data.data &&
+        response.data.data.length > 0
+      ) {
+        console.log(response.data);
+        commit("SET_CURRENT_ID", response.data.data);
+      }
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
+  }
 };
 const mutations = {
   SET_CITA_LISTA(state, cita) {
@@ -113,6 +135,12 @@ const mutations = {
   },
   SET_CURRENT_TEL(state, telefono) {
     state.currentTel = telefono;
+  },
+  SET_CURRENT_SERV(state, servicio) {
+    state.currentServ = servicio;
+  },
+  SET_CURRENT_ID(state, citaId) {
+    state.currentCitaId = citaId
   },
   /*SET_CURRENT_FECHA(state, fecha) {
     state.currentFecha = fecha;
